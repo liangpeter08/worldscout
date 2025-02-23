@@ -19,11 +19,12 @@ class ProfileScreen extends StatelessWidget {
           ),
           SliverPersistentHeader(
             delegate: _SliverAppBarDelegate(
-              const TabBar(
-                tabs: [
+              TabBar(
+                tabs: const [
                   Tab(icon: Icon(Icons.grid_on), text: 'Posts'),
                   Tab(icon: Icon(Icons.bookmark), text: 'Saved'),
                 ],
+                indicatorColor: Theme.of(context).primaryColor,
               ),
             ),
             pinned: true,
@@ -92,32 +93,132 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildPostsGrid() {
     return GridView.builder(
-      padding: const EdgeInsets.all(1),
+      padding: const EdgeInsets.all(2),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 1,
-        mainAxisSpacing: 1,
+        crossAxisCount: 2,
+        crossAxisSpacing: 2,
+        mainAxisSpacing: 2,
+        childAspectRatio: 0.8, // Make posts taller than they are wide
       ),
       itemCount: 30,
-      itemBuilder: (context, index) => Image.network(
-        'https://placeholder.com/200x200',
-        fit: BoxFit.cover,
+      itemBuilder: (context, index) => _buildGridItem(
+        imageUrl: 'https://placeholder.com/400x500',
+        location: 'Paris, France',
+        likes: '1.2K',
       ),
     );
   }
 
   Widget _buildSavedGrid() {
     return GridView.builder(
-      padding: const EdgeInsets.all(1),
+      padding: const EdgeInsets.all(2),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 1,
-        mainAxisSpacing: 1,
+        crossAxisCount: 2,
+        crossAxisSpacing: 2,
+        mainAxisSpacing: 2,
+        childAspectRatio: 0.8,
       ),
       itemCount: 15,
-      itemBuilder: (context, index) => Image.network(
-        'https://placeholder.com/200x200',
-        fit: BoxFit.cover,
+      itemBuilder: (context, index) => _buildGridItem(
+        imageUrl: 'https://placeholder.com/400x500',
+        location: 'Bali, Indonesia',
+        likes: '856',
+      ),
+    );
+  }
+
+  Widget _buildGridItem({
+    required String imageUrl,
+    required String location,
+    required String likes,
+  }) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      margin: EdgeInsets.zero,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.network(
+            imageUrl,
+            fit: BoxFit.cover,
+          ),
+          // Gradient overlay
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withOpacity(0.7),
+                  ],
+                  stops: const [0.6, 1.0],
+                ),
+              ),
+            ),
+          ),
+          // Location and likes
+          Positioned(
+            left: 8,
+            right: 8,
+            bottom: 8,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.location_on,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        location,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.favorite,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      likes,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Tap overlay
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                // TODO: Implement post detail view
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
