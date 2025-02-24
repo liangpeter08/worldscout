@@ -1,0 +1,14 @@
+{
+  "users": {
+    "userId": {
+      "username": "string",
+      "bio": "string",
+      "profileImageUrl": "string (optional)",
+      "followers": "number",
+      "following": "number",
+      "createdAt": "timestamp",
+      "email": "string",
+      "lastActive": "timestamp"
+    }
+  }
+}

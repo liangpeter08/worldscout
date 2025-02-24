@@ -1,0 +1,11 @@
+{
+  "comments": {
+    "commentId": {
+      "userId": "string (reference to users collection)",
+      "postId": "string (reference to posts collection)",
+      "text": "string",
+      "createdAt": "timestamp",
+      "likes": "number"
+    }
+  }
+}

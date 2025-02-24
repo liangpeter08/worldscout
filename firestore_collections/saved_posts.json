@@ -1,0 +1,9 @@
+{
+  "saved_posts": {
+    "savedId": {
+      "userId": "string (reference to users collection)",
+      "postId": "string (reference to posts collection)",
+      "savedAt": "timestamp"
+    }
+  }
+}

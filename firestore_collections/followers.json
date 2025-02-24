@@ -1,0 +1,9 @@
+{
+  "followers": {
+    "followerId": {
+      "followerId": "string (reference to users collection)",
+      "followingId": "string (reference to users collection)",
+      "createdAt": "timestamp"
+    }
+  }
+}

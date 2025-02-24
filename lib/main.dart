@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firebase_options.dart';
 import 'screens/feed_screen.dart';
 import 'screens/explore_screen.dart';
 import 'screens/create_post_screen.dart';
 import 'screens/profile_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const WorldScoutApp());
 }
 
@@ -41,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
     const FeedScreen(),
     const ExploreScreen(),
     const CreatePostScreen(),
-    const ProfileScreen(),
+    ProfileScreen(),
   ];
 
   @override

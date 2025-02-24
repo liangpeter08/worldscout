@@ -1,0 +1,18 @@
+{
+  "posts": {
+    "postId": {
+      "userId": "string (reference to users collection)",
+      "imageUrl": "string",
+      "location": "string",
+      "caption": "string",
+      "likes": "number",
+      "commentsCount": "number",
+      "createdAt": "timestamp",
+      "tags": ["array of strings"],
+      "coordinates": {
+        "latitude": "number",
+        "longitude": "number"
+      }
+    }
+  }
+}

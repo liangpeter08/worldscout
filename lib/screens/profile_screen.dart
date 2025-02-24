@@ -1,46 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/firestore_service.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final FirestoreService _firestoreService = FirestoreService();
+  final String userId = 'NE7w7xFBM7GOxgxoBAPE'; // Replace with actual user ID
+
+  ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            expandedHeight: 200.0,
-            floating: false,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: _buildProfileHeader(),
-            ),
-          ),
-          SliverPersistentHeader(
-            delegate: _SliverAppBarDelegate(
-              TabBar(
-                tabs: const [
-                  Tab(icon: Icon(Icons.grid_on), text: 'Posts'),
-                  Tab(icon: Icon(Icons.bookmark), text: 'Saved'),
-                ],
-                indicatorColor: Theme.of(context).primaryColor,
+        headerSliverBuilder:
+            (context, innerBoxIsScrolled) => [
+              SliverAppBar(
+                expandedHeight: 200.0,
+                floating: false,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: StreamBuilder<DocumentSnapshot>(
+                    stream: _firestoreService.getUserProfile(userId).asStream(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      final userData =
+                          snapshot.data!.data() as Map<String, dynamic>;
+                      return _buildProfileHeader(userData);
+                    },
+                  ),
+                ),
               ),
-            ),
-            pinned: true,
-          ),
-        ],
-        body: TabBarView(
-          children: [
-            _buildPostsGrid(),
-            _buildSavedGrid(),
-          ],
-        ),
+              SliverPersistentHeader(
+                delegate: _SliverAppBarDelegate(
+                  TabBar(
+                    tabs: const [
+                      Tab(icon: Icon(Icons.grid_on), text: 'Posts'),
+                      Tab(icon: Icon(Icons.bookmark), text: 'Saved'),
+                    ],
+                    indicatorColor: Theme.of(context).primaryColor,
+                  ),
+                ),
+                pinned: true,
+              ),
+            ],
+        body: TabBarView(children: [_buildPostsGrid(), _buildSavedGrid()]),
       ),
     );
   }
 
-  Widget _buildProfileHeader() {
+  Widget _buildProfileHeader(Map<String, dynamic> userData) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -51,10 +62,7 @@ class ProfileScreen extends StatelessWidget {
         const SizedBox(height: 8.0),
         const Text(
           'Travel Explorer',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const Text(
           'Exploring the world, one adventure at a time 🌎✈️',
@@ -78,15 +86,9 @@ class ProfileScreen extends StatelessWidget {
       children: [
         Text(
           count,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12),
-        ),
+        Text(label, style: const TextStyle(fontSize: 12)),
       ],
     );
   }
@@ -101,11 +103,12 @@ class ProfileScreen extends StatelessWidget {
         childAspectRatio: 0.8, // Make posts taller than they are wide
       ),
       itemCount: 30,
-      itemBuilder: (context, index) => _buildGridItem(
-        imageUrl: 'https://placeholder.com/400x500',
-        location: 'Paris, France',
-        likes: '1.2K',
-      ),
+      itemBuilder:
+          (context, index) => _buildGridItem(
+            imageUrl: 'https://placeholder.com/400x500',
+            location: 'Paris, France',
+            likes: '1.2K',
+          ),
     );
   }
 
@@ -119,11 +122,12 @@ class ProfileScreen extends StatelessWidget {
         childAspectRatio: 0.8,
       ),
       itemCount: 15,
-      itemBuilder: (context, index) => _buildGridItem(
-        imageUrl: 'https://placeholder.com/400x500',
-        location: 'Bali, Indonesia',
-        likes: '856',
-      ),
+      itemBuilder:
+          (context, index) => _buildGridItem(
+            imageUrl: 'https://placeholder.com/400x500',
+            location: 'Bali, Indonesia',
+            likes: '856',
+          ),
     );
   }
 
@@ -138,10 +142,7 @@ class ProfileScreen extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.network(
-            imageUrl,
-            fit: BoxFit.cover,
-          ),
+          Image.network(imageUrl, fit: BoxFit.cover),
           // Gradient overlay
           Positioned.fill(
             child: DecoratedBox(
@@ -149,10 +150,7 @@ class ProfileScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withOpacity(0.7),
-                  ],
+                  colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
                   stops: const [0.6, 1.0],
                 ),
               ),
@@ -191,18 +189,11 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(
-                      Icons.favorite,
-                      color: Colors.white,
-                      size: 16,
-                    ),
+                    const Icon(Icons.favorite, color: Colors.white, size: 16),
                     const SizedBox(width: 4),
                     Text(
                       likes,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ],
                 ),
@@ -235,7 +226,11 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => _tabBar.preferredSize.height;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: _tabBar,

@@ -1,0 +1,9 @@
+{
+  "likes": {
+    "likeId": {
+      "userId": "string (reference to users collection)",
+      "postId": "string (reference to posts collection)",
+      "createdAt": "timestamp"
+    }
+  }
+}
