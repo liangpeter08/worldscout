@@ -46,7 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '768842528474',
     projectId: 'worldscout-9d813',
     authDomain: 'worldscout-9d813.firebaseapp.com',
-    databaseURL: 'https://worldscout-9d813-default-rtdb.firebaseio.com',
+    // databaseURL: 'https://worldscout-9d813-default-rtdb.firebaseio.com',
     storageBucket: 'worldscout-9d813.firebasestorage.app',
   );
 
@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
     appId: '1:768842528474:android:6ed9c918927b79c85497e3',
     messagingSenderId: '768842528474',
     projectId: 'worldscout-9d813',
-    databaseURL: 'https://worldscout-9d813-default-rtdb.firebaseio.com',
+    // databaseURL: 'https://worldscout-9d813-default-rtdb.firebaseio.com',
     storageBucket: 'worldscout-9d813.firebasestorage.app',
   );
 
@@ -74,7 +74,7 @@ class DefaultFirebaseOptions {
     appId: '1:768842528474:ios:ef8db32e61219cc35497e3',
     messagingSenderId: '768842528474',
     projectId: 'worldscout-9d813',
-    databaseURL: 'https://worldscout-9d813-default-rtdb.firebaseio.com',
+    // databaseURL: 'https://worldscout-9d813-default-rtdb.firebaseio.com',
     storageBucket: 'worldscout-9d813.firebasestorage.app',
     iosBundleId: 'com.example.worldscout',
   );
@@ -85,7 +85,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '768842528474',
     projectId: 'worldscout-9d813',
     authDomain: 'worldscout-9d813.firebaseapp.com',
-    databaseURL: 'https://worldscout-9d813-default-rtdb.firebaseio.com',
+    // databaseURL: 'https://worldscout-9d813-default-rtdb.firebaseio.com',
     storageBucket: 'worldscout-9d813.firebasestorage.app',
   );
 }

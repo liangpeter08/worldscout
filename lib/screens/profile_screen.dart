@@ -4,7 +4,7 @@ import '../services/firestore_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   final FirestoreService _firestoreService = FirestoreService();
-  final String userId = 'NE7w7xFBM7GOxgxoBAPE'; // Replace with actual user ID
+  final String userId = 'ZTflhqTqhWWsu4gQjhyM'; // Replace with actual user ID
 
   ProfileScreen({super.key});
 

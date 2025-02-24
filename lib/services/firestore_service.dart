@@ -52,8 +52,12 @@ class FirestoreService {
     });
   }
 
-  Future<DocumentSnapshot> getUserProfile(String userId) {
-    return _db.collection('users').doc(userId).get();
+  Future<DocumentSnapshot> getUserProfile(String userId) async {
+    final userData = await _db.collection('users').doc(userId).get();
+    if (!userData.exists) {
+      throw Exception('User not found');
+    }
+    return userData;
   }
 
   // Saved Posts Collection
@@ -81,11 +85,12 @@ class FirestoreService {
     required String userId,
     required String postId,
   }) async {
-    final likeDoc = await _db
-        .collection('likes')
-        .where('userId', isEqualTo: userId)
-        .where('postId', isEqualTo: postId)
-        .get();
+    final likeDoc =
+        await _db
+            .collection('likes')
+            .where('userId', isEqualTo: userId)
+            .where('postId', isEqualTo: postId)
+            .get();
 
     if (likeDoc.docs.isEmpty) {
       // Add like
