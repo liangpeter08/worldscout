@@ -51,30 +51,57 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  // Helper method to format counts (e.g., 1500 -> 1.5K)
+  String _formatCount(int count) {
+    if (count >= 1000000) {
+      return '${(count / 1000000).toStringAsFixed(1)}M';
+    } else if (count >= 1000) {
+      return '${(count / 1000).toStringAsFixed(1)}K';
+    } else {
+      return count.toString();
+    }
+  }
+
   Widget _buildProfileHeader(Map<String, dynamic> userData) {
+    // Default image if profileImageUrl is null or empty
+    final String profileImage =
+        userData['profileImageUrl'] != null &&
+                userData['profileImageUrl'].toString().isNotEmpty
+            ? userData['profileImageUrl']
+            : 'https://placeholder.com/100x100';
+
+    // Get username with fallback
+    final String username = userData['username'] ?? 'User';
+
+    // Get bio with fallback
+    final String bio = userData['bio'] ?? 'No bio available';
+
+    // Get stats with fallbacks
+    final String postsCount = userData['postsCount']?.toString() ?? '0';
+    final String followers = _formatCount(userData['followers'] ?? 0);
+    final String following = _formatCount(userData['following'] ?? 0);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const CircleAvatar(
-          radius: 50,
-          backgroundImage: NetworkImage('https://placeholder.com/100x100'),
-        ),
+        CircleAvatar(radius: 50, backgroundImage: NetworkImage(profileImage)),
         const SizedBox(height: 8.0),
-        const Text(
-          'Travel Explorer',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        Text(
+          username,
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        const Text(
-          'Exploring the world, one adventure at a time 🌎✈️',
-          style: TextStyle(fontSize: 14),
+        Text(
+          bio,
+          style: const TextStyle(fontSize: 14),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildStatColumn('Posts', '156'),
-            _buildStatColumn('Followers', '10.5K'),
-            _buildStatColumn('Following', '825'),
+            _buildStatColumn('Posts', postsCount),
+            _buildStatColumn('Followers', followers),
+            _buildStatColumn('Following', following),
           ],
         ),
       ],
