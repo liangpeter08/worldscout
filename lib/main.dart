@@ -6,6 +6,7 @@ import 'screens/feed_screen.dart';
 import 'screens/explore_screen.dart';
 import 'screens/create_post_screen.dart';
 import 'screens/profile_screen.dart';
+import 'screens/auth_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +28,8 @@ class WorldScoutApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const MainScreen(),
+      home: const AuthWrapper(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
